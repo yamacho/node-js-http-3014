@@ -14,12 +14,13 @@ const server = http.createServer((req, res) => {
       rs.pipe(res);
       break;
     case 'POST':
-      res.write('POST ' + req.url);
       let rawData = '';
       req.on('data', (chunk) => {
         rawData = rawData + chunk;
       }).on('end', () => {
-        console.info('[' + now + '] Data posted: ' + rawData);
+        const decoded = decodeURIComponent(rawData);
+        console.info('[' + now + '] 投稿: ' + decoded);
+        res.write('<!DOCTYPE html><html lang="ja"><body><h1>' + decoded + 'が投稿されました<h1></body></html>');
         res.end();
       });
       break;
